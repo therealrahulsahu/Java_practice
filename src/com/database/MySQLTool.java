@@ -1,5 +1,6 @@
 package com.database;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MySQLTool {
 	Connection conn = null;
@@ -17,7 +18,7 @@ public class MySQLTool {
 		S_password = password;
 	}
 
-	public void insert_query(String query){
+	public void insert_query(String query){				// function execute a insert query
 		result_available = false;
 		try {
 			Class.forName(S_driver);
@@ -25,13 +26,28 @@ public class MySQLTool {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.toString());
 		} finally {
 			close();
 		}
 	}
 
-	void close(){
+	public void insert_multiple_queries(ArrayList<String> queries){		// function to execute multiple insert queries
+		result_available = false;
+		try {
+			Class.forName(S_driver);
+			conn = DriverManager.getConnection(S_url, S_user, S_password);
+			stmt = conn.createStatement();
+			for (String query: queries) {
+				stmt.executeUpdate(query);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} finally {
+			close();
+		}
+	}
+	void close(){				// method to close connection
 		try{
 			if(stmt!=null)
 				stmt.close();
@@ -41,7 +57,7 @@ public class MySQLTool {
 			if(conn!=null)
 				conn.close();
 		}catch(SQLException se){
-			se.printStackTrace();
+			System.out.println(se.toString());
 		}
 	}
 }
