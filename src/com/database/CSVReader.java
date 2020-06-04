@@ -403,7 +403,7 @@ public class CSVReader {
 			if (data.get(46).equals("") || data.get(46).equals(" ")){
 				tuple.setDisputed_amount(null);
 			}else {
-				tuple.setDisputed_amount(Float.parseFloat(data.get(46)));
+				tuple.setDisputed_amount(Float.parseFloat(data.get(46).substring(0, data.get(46).length()-1)));
 			}
 
 			result.add(tuple);
